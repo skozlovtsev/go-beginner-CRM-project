@@ -10,6 +10,7 @@ import (
 )
 
 func setupRoutes(app *fiber.App){
+	//добавление обработчиков в app
 	app.Get("/api/v1/lead", lead.GetLeads)
 	app.Get("/api/v1/lead/:id", lead.GetLead)
 	app.Post("/api/v1/lead", lead.NewLead)
@@ -18,7 +19,7 @@ func setupRoutes(app *fiber.App){
 
 func initDatabase(){
 	var err error
-	database.DBConn, err = gorm.Open("postgres", "host=localhost user=postgres password=1234 dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Moscow")
+	database.DBConn, err = gorm.Open("postgres", "host=localhost user=postgres password=1234 dbname=postgres port=5432 sslmode=disable TimeZone=Europe/Moscow")  //подключение базы данных
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -28,9 +29,9 @@ func initDatabase(){
 }
 
 func main() {
-	app := fiber.New()
-	initDatabase()
-	setupRoutes(app)
-	app.Listen(3000)
+	app := fiber.New()  //создание нового объекта типа fiber.App
+	initDatabase()  //инициация базы данных
+	setupRoutes(app)  //добавление обработчиков
+	app.Listen(3000)  //запуск сервера на локальном хосте
 	defer database.DBConn.Close()  //после того как выполнение функции полностью завершено, закрываем подключение к базе данных 
 }
